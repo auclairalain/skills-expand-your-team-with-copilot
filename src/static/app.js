@@ -554,6 +554,12 @@ document.addEventListener("DOMContentLoaded", () => {
             .join("")}
         </ul>
       </div>
+      <div class="share-buttons">
+        <span class="share-label">Share:</span>
+        <a class="share-button" data-network="facebook" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook">Facebook</a>
+        <a class="share-button" data-network="x" href="#" target="_blank" rel="noopener noreferrer" aria-label="Share on X">X</a>
+        <a class="share-button" data-network="email" href="#" aria-label="Share by email">Email</a>
+      </div>
       <div class="activity-card-actions">
         ${
           currentUser
@@ -572,6 +578,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       </div>
     `;
+
+    // Set up share links
+    const shareText = `Check out ${name} at Mergington High School: ${details.description}`;
+    const shareUrl = window.location.href;
+    const shareLinks = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
+      x: `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+      email: `mailto:?subject=${encodeURIComponent(name)}&body=${encodeURIComponent(shareText + "\n" + shareUrl)}`,
+    };
+    activityCard.querySelectorAll(".share-button").forEach((link) => {
+      link.href = shareLinks[link.dataset.network];
+    });
 
     // Add click handlers for delete buttons
     const deleteButtons = activityCard.querySelectorAll(".delete-participant");
